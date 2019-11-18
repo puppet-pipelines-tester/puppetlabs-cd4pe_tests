@@ -1,0 +1,83 @@
+---
+config:
+  enable_pull_requests_from_forks: false
+  deployment_policy_branch: null
+pipelines:
+  master:
+    triggers:
+    - "COMMIT"
+    stages:
+    - name: "Chris Balidation stage"
+      steps:
+      - type: "JOB"
+        name: "module-pdk-validate"
+        deployments: null
+        policy: null
+        parameters: null
+        timeout: null
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: null
+        target: null
+      - type: "JOB"
+        name: "module-rspec-puppet"
+        deployments: null
+        policy: null
+        parameters: null
+        timeout: null
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: null
+        target: null
+      - type: "PULL_REQUEST_GATE"
+        name: null
+        deployments: null
+        policy: null
+        parameters: null
+        timeout: null
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: null
+        target: null
+      auto_promote: false
+    - name: "Deployment stage"
+      steps:
+      - type: "DEPLOYMENT"
+        name: null
+        deployments: null
+        policy:
+          source: null
+          branch: null
+          name: "cd4pe_deployments::eventual_consistency"
+          tag: null
+        parameters: null
+        timeout: null
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "github"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "25443b28-fd73-43eb-aba2-9c82ae9612bd"
+          environment_prefix: null
+      auto_promote: false
+    - name: "Pipeline Stage 3"
+      steps:
+      - type: "DEPLOYMENT"
+        name: null
+        deployments: null
+        policy:
+          source: null
+          branch: null
+          name: "cd4pe_deployments::eventual_consistency"
+          tag: null
+        parameters: null
+        timeout: null
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "github"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "c5ad4792-12a5-4cd9-9a2a-ea3d07d384b9"
+          environment_prefix: null
+      auto_promote: false
+spec_version: "V1"
