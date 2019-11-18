@@ -7,7 +7,7 @@ pipelines:
     triggers:
     - "COMMIT"
     stages:
-    - name: "Chris Balidation stage"
+    - name: "Yeah stage"
       steps:
       - type: "JOB"
         name: "module-pdk-validate"
