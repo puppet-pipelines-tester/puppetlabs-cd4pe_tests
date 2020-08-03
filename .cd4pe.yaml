@@ -1,0 +1,110 @@
+config:
+  enable_pull_requests_from_forks: false
+pipelines:
+  /^(?!master|production).*$/:
+    triggers:
+    - "COMMIT"
+    stages:
+    - name: "Code Validation stage"
+      steps:
+      - type: "JOB"
+        name: "control-repo-manifest-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "JOB"
+        name: "control-repo-hiera-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "JOB"
+        name: "control-repo-template-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "JOB"
+        name: "control-repo-puppetfile-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      auto_promote: "all_succeeded"
+    - name: "Code deployment"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment on infranext-test"
+        policy:
+          name: "cd4pe_deployments::feature_branch"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "github-pe"
+        target:
+          type: "NODE_GROUP"
+        control_repo: "github-cdpe-2017-3-pe-master-1-control"
+        base_feature_branch: "master"
+      - type: "DEPLOYMENT"
+        name: "Deployment on Infranext-prod"
+        policy:
+          name: "cd4pe_deployments::feature_branch"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "github-pe"
+        target:
+          type: "NODE_GROUP"
+        control_repo: "github-cdpe-2017-3-pe-master-1-control"
+        base_feature_branch: "master"
+      auto_promote: false
+  master:
+    triggers:
+    - "COMMIT"
+    - "PULL_REQUEST"
+    stages:
+    - name: "Code Validation stage"
+      steps:
+      - type: "JOB"
+        name: "control-repo-manifest-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "JOB"
+        name: "control-repo-hiera-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "JOB"
+        name: "control-repo-template-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "JOB"
+        name: "control-repo-puppetfile-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      auto_promote: "all_succeeded"
+    - name: "Onceover Stage"
+      steps:
+      - type: "JOB"
+        name: "Onceover check"
+        concurrent_compilations: 0
+        all_deployments: false
+      auto_promote: "all_succeeded"
+    - name: "Impact analysis"
+      steps:
+      - type: "IMPACT_ANALYSIS"
+        concurrent_compilations: 10
+        all_deployments: true
+      - type: "PULL_REQUEST_GATE"
+        concurrent_compilations: 0
+        all_deployments: false
+      auto_promote: "all_succeeded"
+    - name: "Deployment stage"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment to production on infranext-test"
+        policy:
+          name: "cd4pe_deployments::feature_branch"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "github-pe"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "5fcf1ecd-3c31-4c92-a115-bb4eeaaf9172"
+        control_repo: "github-cdpe-2017-3-pe-master-1-control"
+        base_feature_branch: "master"
+      auto_promote: false
+spec_version: "V1"
