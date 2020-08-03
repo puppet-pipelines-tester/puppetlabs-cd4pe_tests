@@ -23,7 +23,7 @@ pipelines:
         name: "control-repo-puppetfile-syntax-validate"
         concurrent_compilations: 0
         all_deployments: false
-      auto_promote: "all_succeeded"
+      auto_promote: "any_succeeded"
     - name: "Code deployment"
       steps:
       - type: "DEPLOYMENT"
@@ -74,14 +74,14 @@ pipelines:
         name: "control-repo-puppetfile-syntax-validate"
         concurrent_compilations: 0
         all_deployments: false
-      auto_promote: "all_succeeded"
+      auto_promote: "any_succeeded"
     - name: "Onceover Stage"
       steps:
       - type: "JOB"
         name: "Onceover check"
         concurrent_compilations: 0
         all_deployments: false
-      auto_promote: "all_succeeded"
+      auto_promote: "any_succeeded"
     - name: "Impact analysis"
       steps:
       - type: "IMPACT_ANALYSIS"
@@ -90,7 +90,7 @@ pipelines:
       - type: "PULL_REQUEST_GATE"
         concurrent_compilations: 0
         all_deployments: false
-      auto_promote: "all_succeeded"
+      auto_promote: "any_succeeded"
     - name: "Deployment stage"
       steps:
       - type: "DEPLOYMENT"
