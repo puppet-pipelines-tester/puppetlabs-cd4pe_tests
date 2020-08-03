@@ -36,7 +36,7 @@ pipelines:
         pe_server: "github-pe"
         target:
           type: "NODE_GROUP"
-        control_repo: "github-cdpe-2017-3-pe-master-1-control"
+        control_repo: "github-cdpe-2018-1-pe-master-1-control"
         base_feature_branch: "master"
       - type: "DEPLOYMENT"
         name: "Deployment on Infranext-prod"
@@ -48,7 +48,7 @@ pipelines:
         pe_server: "github-pe"
         target:
           type: "NODE_GROUP"
-        control_repo: "github-cdpe-2017-3-pe-master-1-control"
+        control_repo: "github-cdpe-2018-1-pe-master-1-control"
         base_feature_branch: "master"
       auto_promote: false
   master:
@@ -104,7 +104,7 @@ pipelines:
         target:
           type: "NODE_GROUP"
           node_group_id: "5fcf1ecd-3c31-4c92-a115-bb4eeaaf9172"
-        control_repo: "github-cdpe-2017-3-pe-master-1-control"
+        control_repo: "github-cdpe-2018-1-pe-master-1-control"
         base_feature_branch: "master"
       auto_promote: false
 spec_version: "V1"
